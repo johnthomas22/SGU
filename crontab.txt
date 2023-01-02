@@ -23,5 +23,5 @@
 0 0 * * * cp -vn /var/discourse/shared/standalone/backups/default/* /home/john/google-drive/
 0 1 * * * /home/john/archive_backups.sh >~/remove_old_backups.sh
 30 1 * * * . ~/remove_old_backups.sh >>~/remove_old_backups.log 2>&1
-01,16,31,46 * * * * /home/john/python3 /home/john/checkLeven.py
+01,16,31,46 * * * * /home/john/python3 /home/john/SGU/checkLeven.py
 01,16,31,46 * * * * /home/john/python3 /home/john/checkAlmond.py
