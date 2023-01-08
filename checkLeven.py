@@ -50,14 +50,14 @@ else:
     print('Nothing to do here...')
 
 if float(last["Value"]) < limit:
-   print('Deleted last reading file')
    try:
       os.remove("/home/john/lastreading.txt") 
+      print('Deleted last reading file')
+      with smtplib.SMTP_SSL('smtp.gmail.com', 465) as connection:
+          connection.login(email_address_from, email_password )
+          connection.sendmail(from_addr=email_address_from, to_addrs=email_address_to,
+          msg="subject:Loch Leven Sluice water level \n\n SEPA's sensors indicated the water level has fallen below RED level to " + last["Value"] + " at " + lasttimestr + "\n Check https://www2.sepa.org.uk/WaterLevels/default.aspx?sd=t&lc=477620 for details.")
    except:
        print("lastreading.txt not found")
-   with smtplib.SMTP_SSL('smtp.gmail.com', 465) as connection:
-    connection.login(email_address_from, email_password )
-    connection.sendmail(from_addr=email_address_from, to_addrs=email_address_to,
-    msg="subject:Loch Leven Sluice water level \n\n SEPA's sensors indicated the water level has fallen below RED level to " + last["Value"] + " at " + lasttimestr + "\n Check https://www2.sepa.org.uk/WaterLevels/default.aspx?sd=t&lc=477620 for details.")
 
 print("SEPA's sensors indicated the water level is " + last["Value"] + " at " + lasttimestr + "\n Check https://www2.sepa.org.uk/WaterLevels/default.aspx?sd=t&lc=477620 for details.")
