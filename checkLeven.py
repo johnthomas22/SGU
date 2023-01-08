@@ -10,18 +10,17 @@ from datetime import datetime
 try:
    f = open("/home/john/lastreading.txt", "r")
    result = float(f.read())
-   print("Last result: ", result)
 except:
    result = 0
 
-print("Result = ", result)
+print("Last Result = ", result)
 
 file_name = '/home/john/checkLeven.pickled'
 parameters = pickle.load(open(file_name, 'rb'))
 
 email_address_from = parameters['email_address_from']
 email_address_to = parameters['email_address_to']
-#email_password = parameters['email_password']
+email_password = parameters['email_password']
 
 print('email_address_from =', email_address_from)
 print('email_address_to =', email_address_to)
@@ -37,6 +36,7 @@ limit = 1.4
 lasttime = datetime.strptime(last["Timestamp"], "%Y-%m-%dT%H:%M:%S").timestamp()
 lasttimets = datetime.fromtimestamp(lasttime)
 lasttimestr = lasttimets.strftime("%d/%m/%Y %H:%M:%S")
+
 if float(last["Value"]) > limit and float(last["Value"]) > result:
    print('Increase detected...')
    f = open("/home/john/lastreading.txt", "w")
@@ -45,12 +45,16 @@ if float(last["Value"]) > limit and float(last["Value"]) > result:
    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as connection:
     connection.login(email_address_from, email_password )
     connection.sendmail(from_addr=email_address_from, to_addrs=email_address_to,
-    msg="subject:High Loch Leven Sluice water level \n\n SEPA's sensors indicated the water level is " + last["Value"] + " at " + lasttimestr + "\n Check https://www2.sepa.org.uk/WaterLevels/default.aspx?sd=t&lc=477620 for details.")
+    msg="subject:Loch Leven Sluice water level is RED \n\n SEPA's sensors indicated the water level is " + last["Value"] + " at " + lasttimestr + "\n Check https://www2.sepa.org.uk/WaterLevels/default.aspx?sd=t&lc=477620 for details.")
 else:
     print('Nothing to do here...')
 
-if result < limit:
+if float(last["Value"]) < limit:
    print('Deleted last reading file')
    os.remove("/home/john/lastreading.txt") 
+   with smtplib.SMTP_SSL('smtp.gmail.com', 465) as connection:
+    connection.login(email_address_from, email_password )
+    connection.sendmail(from_addr=email_address_from, to_addrs=email_address_to,
+    msg="subject:Loch Leven Sluice water level \n\n SEPA's sensors indicated the water level has fallen below RED level to " + last["Value"] + " at " + lasttimestr + "\n Check https://www2.sepa.org.uk/WaterLevels/default.aspx?sd=t&lc=477620 for details.")
 
 print("SEPA's sensors indicated the water level is " + last["Value"] + " at " + lasttimestr + "\n Check https://www2.sepa.org.uk/WaterLevels/default.aspx?sd=t&lc=477620 for details.")
