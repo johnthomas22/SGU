@@ -51,7 +51,10 @@ else:
 
 if float(last["Value"]) < limit:
    print('Deleted last reading file')
-   os.remove("/home/john/lastreading.txt") 
+   try:
+      os.remove("/home/john/lastreading.txt") 
+   except:
+       print("lastreading.txt not found")
    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as connection:
     connection.login(email_address_from, email_password )
     connection.sendmail(from_addr=email_address_from, to_addrs=email_address_to,
