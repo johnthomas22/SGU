@@ -13,11 +13,11 @@ def main():
     # open and read the file after the appending:
     try:
         with open("/home/john/lastreading.txt", "r") as f:
-            result = float(f.read())
+            last_reading = float(f.read())
     except Exception:
-        result = 0.0
+        last_reading = 0.0
 
-    print("Last Result = ", result)
+    print("Last Result = ", last_reading)
 
     file_name = "/home/john/checkLeven.pickled"
     with open(file_name, "rb") as pickle_f:
