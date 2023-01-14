@@ -10,7 +10,7 @@ LIMIT = 1.4
 
 
 def main():
-    # open and read the file after the appending:
+    # open and read the last reading
     try:
         with open("/home/john/lastreading.txt", "r") as f:
             last_reading = float(f.read())
@@ -29,7 +29,6 @@ def main():
 
     print(f"{email_address_from=}")
     print(f"{email_address_to=}")
-    # print('email_password =', email_password)
 
     data = requests.get(URL).json()
     last = data[-1]
