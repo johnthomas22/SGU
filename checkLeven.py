@@ -54,7 +54,7 @@ Check https://www2.sepa.org.uk/WaterLevels/default.aspx?sd=t&lc=477620 for detai
     else:
         print("Nothing to do here...")
 
-    if float(last["Value"]) < LIMIT:
+    if float(last["Value"]) < LIMIT and last_reading >0.0:
         try:
             os.remove("/home/john/lastreading.txt")
             print("Deleted last reading file")
